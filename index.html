@@ -546,6 +546,59 @@ footer{position:relative;z-index:5;padding:2rem clamp(1.5rem,4vw,4rem);border-to
   footer{flex-direction:column;text-align:center;align-items:center}
   .foot-links{justify-content:center}
 }
+/* ════ SCROLL TO TOP BUTTON ════ */
+#scrollTopBtn{
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  border:1px solid var(--blue-border);
+  background:rgba(6,13,26,.85);
+  color:var(--white);
+  font-size:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:1200;
+
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(20px) scale(.9);
+
+  backdrop-filter:blur(10px);
+  transition:
+    opacity .35s var(--ease-out),
+    transform .35s var(--ease-out),
+    box-shadow .3s;
+}
+
+/* Hover */
+#scrollTopBtn:hover{
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  box-shadow:0 0 25px rgba(14,165,233,.5);
+  transform:translateY(0) scale(1.05);
+}
+
+/* Show state */
+#scrollTopBtn.show{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0) scale(1);
+}
+
+/* Mobile tweak */
+@media(max-width:768px){
+  #scrollTopBtn{
+    width:42px;
+    height:42px;
+    font-size:16px;
+    bottom:20px;
+    right:20px;
+  }
+}
 </style>
 </head>
 <body>
@@ -991,6 +1044,11 @@ footer{position:relative;z-index:5;padding:2rem clamp(1.5rem,4vw,4rem);border-to
   </ul>
   <div class="foot-copy">© 2025 ERP Enterprise Intelligence Platform.</div>
 </footer>
+
+<!-- Scroll To Top Button -->
+<button id="scrollTopBtn" aria-label="Scroll to top">
+  ↑
+</button>
 
 
 <!-- ════ PIXEL CANVAS WEB COMPONENT ════ -->
@@ -1567,6 +1625,34 @@ function initParticleCanvas(){
   boot();
   requestAnimationFrame(t=>{last=t;loop(t)});
 }
+</script>
+<script>
+  const scrollBtn = document.getElementById("scrollTopBtn");
+
+// SHOW / HIDE (GSAP synced)
+ScrollTrigger.create({
+  start: "top -200",
+  end: "bottom bottom",
+  onUpdate: (self) => {
+    if (self.scroll() > 400) {
+      scrollBtn.classList.add("show");
+    } else {
+      scrollBtn.classList.remove("show");
+    }
+  }
+});
+
+// CLICK → SCROLL TOP (Lenis smooth)
+scrollBtn.addEventListener("click", () => {
+  if (typeof lenis !== "undefined") {
+    lenis.scrollTo(0, {
+      duration: 1.2,
+      easing: (t) => 1 - Math.pow(1 - t, 3)
+    });
+  } else {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+});
 </script>
 </body>
 </html>
