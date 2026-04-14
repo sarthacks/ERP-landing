@@ -2,7 +2,7 @@
   "name": "ERP — Enterprise Intelligence Platform",
   "short_name": "ERP",
   "description": "One System. Every Department. Zero Confusion.",
-  "start_url": "/",
+  "start_url": "https://sarthacks.github.io/ERP-landing/",
   "display": "standalone",
   "background_color": "#03080f",
   "theme_color": "#0ea5e9",
